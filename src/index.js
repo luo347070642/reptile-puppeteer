@@ -10,6 +10,9 @@ switch (params.TARGET) {
   case 'xueqiu':
     require('./xueqiu/index')(params.stockCode || '000895')
     break
+  case 'weibo':
+    require('./xlWeibo/index')()
+    break
   default:
     require('./baiduNews/index')()
 }

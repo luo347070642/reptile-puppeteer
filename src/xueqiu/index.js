@@ -10,18 +10,29 @@ const getBaiduNews = stockCode => {
     // console.log(await page.content())
     const html = await page.evaluate(body => {
       console.log(body.innerHTML)
-      const list = Array.from(body.querySelectorAll('.quote-container')).map(item => {
+      const list = Array.from(body.querySelectorAll('.stock__main')).map(item => {
         // 名称
-        let stockName = item.querySelector('.stock-current strong').innerText
-        // 价格
-        let stockPrice = item.querySelector('.stock-current strong').innerText
-        // 涨幅
-        let stockGain = item.querySelector('.stock-current strong').innerText
-        return { stockName, stockPrice, stockGain }
+        let stockName = item.querySelector('.stock-name').innerText
+        // // 价格
+        // let stockPrice = item.querySelector('.quote-container .stock-current strong').innerText
+        // // 涨幅
+        // let stockGain = item.querySelector('.quote-container .stock-change').innerText
+        // // 今开
+        // let stockOpenNow = item.querySelector('.quote-container .quote-info .stock-rise').innerText
+        // // 昨收
+        // let stockYesterday = item.querySelector('.quote-container .quote-info .separateTop td:nth-child(2) span').innerHTML
+        // return `${stockName} => 当前价：${stockPrice}，涨幅：${stockGain}，今开：${stockOpenNow}，昨收：${stockYesterday}`
+        const data = Array.from(item.querySelectorAll('.quote-container .quote-info tr')).map(tr =>
+          Array.from(tr.querySelectorAll('td'))
+            .map(td => td.innerText)
+            .join('，')
+        )
+        return `${stockName} => ${data.join('；')}`
       })
-      return list
+      return list.join('')
     }, bodyHandle)
-    console.log(JSON.stringify(html, null, 2))
+    // console.log(JSON.stringify(html, null, 2))
+    console.log(html)
     // utils.writeFile('out/data.json', JSON.stringify(html, null, 2))
     // let str = []
     //     html.forEach((item, i) => {
